@@ -1,0 +1,92 @@
+import random
+
+class Usuario:
+    def _init_(self, nome, saldo):
+        self.nome = nome
+        self.saldo = saldo
+
+    def realizar_pagamento(self, valor, descricao, metodo):
+        if valor <= 0:
+            print(">> Valor inválido.")
+            return
+
+        if metodo == "PIX":
+            self.processar_pix(valor, descricao)
+        elif metodo == "Cartão de Crédito":
+            self.processar_credito(valor, descricao)
+        elif metodo == "Cartão de Débito":
+            self.processar_debito(valor, descricao)
+        else:
+            print(">> Método de pagamento inválido.")
+
+    def processar_pix(self, valor, descricao):
+        if self.saldo >= valor:
+            self.saldo -= valor
+            print(f">> PIX de R${valor:.2f} realizado para '{descricao}'.")
+        else:
+            print(">> Saldo insuficiente para PIX.")
+        self.ver_saldo()
+
+    def processar_debito(self, valor, descricao):
+        if self.saldo >= valor:
+            self.saldo -= valor
+            print(f">> Débito de R${valor:.2f} realizado para '{descricao}'.")
+        else:
+            print(">> Saldo insuficiente para débito.")
+        self.ver_saldo()
+
+    def processar_credito(self, valor, descricao):
+        aprovacao = random.choice([True, True, False])  # 2/3 chance de aprovação
+        if aprovacao:
+            print(f">> Crédito de R${valor:.2f} aprovado para '{descricao}'. (será cobrado na fatura)")
+        else:
+            print(">> Pagamento com cartão de crédito recusado.")
+
+    def ver_saldo(self):
+        print(f">> Saldo atual: R${self.saldo:.2f}")
+
+class AppPagamento:
+    def _init_(self):
+        nome = input("Digite seu nome: ")
+        saldo_inicial = float(input("Digite seu saldo inicial: R$ "))
+        self.usuario = Usuario(nome, saldo_inicial)
+
+    def menu(self):
+        while True:
+            print("\n--- MENU DE PAGAMENTO ---")
+            print("1. Ver saldo")
+            print("2. Realizar pagamento")
+            print("3. Sair")
+            opcao = input("Escolha uma opção: ")
+
+            if opcao == '1':
+                self.usuario.ver_saldo()
+            elif opcao == '2':
+                self.realizar_pagamento()
+            elif opcao == '3':
+                print("Encerrando o aplicativo.")
+                break
+            else:
+                print("Opção inválida. Tente novamente.")
+
+    def realizar_pagamento(self):
+        descricao = input("Descrição do pagamento (ex: reserva de quadra): ")
+        valor = float(input("Valor a pagar: R$ "))
+        print("\nMétodos disponíveis:")
+        print("1. PIX")
+        print("2. Cartão de Crédito")
+        print("3. Cartão de Débito")
+        metodo = input("Escolha o número do método: ")
+
+        if metodo == '1':
+            self.usuario.realizar_pagamento(valor, descricao, "PIX")
+        elif metodo == '2':
+            self.usuario.realizar_pagamento(valor, descricao, "Cartão de Crédito")
+        elif metodo == '3':
+            self.usuario.realizar_pagamento(valor, descricao, "Cartão de Débito")
+        else:
+            print("Método inválido.")
+
+# Iniciar aplicativo
+app = AppPagamento()
+app.menu()
