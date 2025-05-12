@@ -1,0 +1,39 @@
+Codigo em linguagem C.
+#include <stdio.h>
+#include <string.h>
+#include<locale.h>
+int main() {
+//Declaraçao de variaveis
+int horario;
+char tipoQuadra[20];
+int quadra = 1;
+//Usuario escolhe o horário que deseja
+printf("Digite o horario que deseja reservar a quadra nesse horario (14-22): \n");
+scanf("%d", &horario);
+//Verifica se o horário escolhido está disponível
+if (horario < 14 || horario > 22){
+printf("Horário inválido! Por favor, escolha uma hora entre 14 e 22.\n");
+} else {
+//Pede para usuario escolher o tipo de quadra que deseja
+printf("Digite o tipo de quadra (futebol, tenis, volei e basquete.): ");
+scanf("%s", tipoQuadra);
+//Verifica o tipo de quadra se esta disponível
+if (strcmp(tipoQuadra, "futebol") == 0 || strcmp(tipoQuadra, "tenis") == 0 || strcmp(tipoQuadra,
+"basquete") == 0 || strcmp(tipoQuadra, "volei") == 0) {
+//Verifica se a quadra esta disponível para reserva
+if (quadra) {
+printf("Quadra de %s disponível! Sua reserva para às %d horas foi confirmada.\n", tipoQuadra,
+horario);
+} else {
+printf("Desculpe, a quadra de %s não está disponível neste horário. Tente escolher outro horário.\n",
+tipoQuadra);
+}
+} else {
+printf("Tipo de quadra não esta disponível! Por favor, escolha o tipo de quadra disponível.\n");
+Av. Universitária Km 3,5 - Cidade Universitária – Anápolis/GO, CEP 75083 - 515
+Secretaria Setorial – Bloco I
+Fone: (62) 3310 6658 | FAX: (62) 3310 6607
+}
+}
+return 0;
+}.
