@@ -1,0 +1,41 @@
+import math
+
+class Quadra:
+    def _init_(self, nome, tipo, latitude, longitude):
+        self.nome = nome
+        self.tipo = tipo
+        self.latitude = latitude
+        self.longitude = longitude
+
+    def distancia_para(self, lat_usuario, long_usuario):
+        return math.sqrt((self.latitude - lat_usuario)*2 + (self.longitude - long_usuario)*2)
+
+    def exibir_info(self, distancia):
+        print(f"- {self.nome} ({self.tipo}) - Distância: {distancia:.3f} unidades")
+
+class AppQuadras:
+    def _init_(self):
+        self.quadras = [
+            Quadra("Quadra Central", "Futebol", -16.332, -48.951),
+            Quadra("Arena Vôlei", "Vôlei de areia", -16.340, -48.949),
+            Quadra do Bairro Azul", "Basquete", -16.345, -48.940),
+            Quadra da Universidade", "Futsal", -16.330, -48.960)
+        ]
+
+    def encontrar_proximas(self, lat_usuario, long_usuario, limite=3):
+        quadras_ordenadas = sorted(
+            self.quadras,
+            key=lambda q: q.distancia_para(lat_usuario, long_usuario)
+        )
+        print("\nQuadras mais próximas de você:")
+        for q in quadras_ordenadas[:limite]:
+            dist = q.distancia_para(lat_usuario, long_usuario)
+            q.exibir_info(dist)
+
+# Simulação do uso
+print(">>> LOCALIZADOR DE QUADRAS <<<")
+lat = float(input("Digite sua latitude (ex: -16.335): "))
+long = float(input("Digite sua longitude (ex: -48.952): "))
+
+app = AppQuadras()
+app.encontrar_proximas(lat, long)
