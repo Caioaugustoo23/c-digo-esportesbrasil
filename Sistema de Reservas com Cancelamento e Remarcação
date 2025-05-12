@@ -1,0 +1,118 @@
+class Reserva:
+    def _init_(self, usuario, horario):
+        self.usuario = usuario
+        self.horario = horario
+
+class Quadra:
+    def _init_(self, nome):
+        self.nome = nome
+        self.reservas = {}  # chave: horário, valor: Reserva
+
+    def reservar(self, usuario, horario):
+        if horario in self.reservas:
+            print(f">> Horário {horario} já está reservado por {self.reservas[horario].usuario}.")
+        else:
+            self.reservas[horario] = Reserva(usuario, horario)
+            print(f">> Reserva feita para {usuario} às {horario} na {self.nome}.")
+
+    def cancelar(self, usuario, horario):
+        if horario in self.reservas and self.reservas[horario].usuario == usuario:
+            del self.reservas[horario]
+            print(f">> Reserva de {usuario} às {horario} cancelada com sucesso.")
+        else:
+            print(">> Nenhuma reserva encontrada com esse nome e horário.")
+
+    def remarcar(self, usuario, horario_antigo, novo_horario):
+        if horario_antigo in self.reservas and self.reservas[horario_antigo].usuario == usuario:
+            if novo_horario not in self.reservas:
+                del self.reservas[horario_antigo]
+                self.reservas[novo_horario] = Reserva(usuario, novo_horario)
+                print(f">> Reserva remarcada para {novo_horario}.")
+            else:
+                print(">> Novo horário já está ocupado.")
+        else:
+            print(">> Reserva original não encontrada.")
+
+    def listar_reservas(self):
+        if not self.reservas:
+            print(f">> {self.nome} não tem reservas.")
+        else:
+            print(f"\nReservas da {self.nome}:")
+            for h, r in self.reservas.items():
+                print(f"- {h}: {r.usuario}")
+
+class SistemaReservas:
+    def _init_(self):
+        self.horarios = ["08:00", "10:00", "12:00", "14:00", "16:00"]
+        self.quadras = [
+            Quadra("Quadra 1"),
+            Quadra("Quadra 2")
+        ]
+
+    def menu(self):
+        while True:
+            print("\n--- MENU DE RESERVAS ---")
+            print("1. Fazer reserva")
+            print("2. Cancelar reserva")
+            print("3. Remarcar reserva")
+            print("4. Ver reservas")
+            print("5. Sair")
+            op = input("Escolha uma opção: ")
+
+            if op == '1':
+                self.fazer_reserva()
+            elif op == '2':
+                self.cancelar_reserva()
+            elif op == '3':
+                self.remarcar_reserva()
+            elif op == '4':
+                self.ver_reservas()
+            elif op == '5':
+                print("Encerrando o sistema.")
+                break
+            else:
+                print("Opção inválida.")
+
+    def listar_quadras(self):
+        for i, q in enumerate(self.quadras):
+            print(f"{i + 1}. {q.nome}")
+        idx = int(input("Número da quadra: ")) - 1
+        return self.quadras[idx]
+
+    def listar_horarios(self):
+        for i, h in enumerate(self.horarios):
+            print(f"{i + 1}. {h}")
+        idx = int(input("Escolha o horário: ")) - 1
+        return self.horarios[idx]
+
+    def fazer_reserva(self):
+        print("\nEscolha a quadra:")
+        quadra = self.listar_quadras()
+        horario = self.listar_horarios()
+        nome = input("Seu nome: ")
+        quadra.reservar(nome, horario)
+
+    def cancelar_reserva(self):
+        print("\nCancelar reserva:")
+        quadra = self.listar_quadras()
+        horario = self.listar_horarios()
+        nome = input("Seu nome: ")
+        quadra.cancelar(nome, horario)
+
+    def remarcar_reserva(self):
+        print("\nRemarcar reserva:")
+        quadra = self.listar_quadras()
+        print("Horário antigo:")
+        horario_antigo = self.listar_horarios()
+        print("Novo horário:")
+        novo_horario = self.listar_horarios()
+        nome = input("Seu nome: ")
+        quadra.remarcar(nome, horario_antigo, novo_horario)
+
+    def ver_reservas(self):
+        for quadra in self.quadras:
+            quadra.listar_reservas()
+
+# Executar o sistema
+sistema = SistemaReservas()
+sistema.menu()
