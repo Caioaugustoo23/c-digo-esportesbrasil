@@ -1,0 +1,74 @@
+class Avaliacao:
+    def _init_(self, nome_usuario, nota):
+        self.nome_usuario = nome_usuario
+        self.nota = nota
+
+class Quadra:
+    def _init_(self, nome):
+        self.nome = nome
+        self.avaliacoes = []
+
+    def adicionar_avaliacao(self, nome_usuario, nota):
+        if 1 <= nota <= 5:
+            self.avaliacoes.append(Avaliacao(nome_usuario, nota))
+            print(f">> {nome_usuario} avaliou {self.nome} com nota {nota}.")
+        else:
+            print(">> Nota inválida. Use uma nota entre 1 e 5.")
+
+    def mostrar_avaliacoes(self):
+        if not self.avaliacoes:
+            print(f">> {self.nome} ainda não foi avaliada.")
+        else:
+            print(f"\nAvaliações de {self.nome}:")
+            for av in self.avaliacoes:
+                print(f"- {av.nome_usuario}: Nota {av.nota}")
+            media = sum(av.nota for av in self.avaliacoes) / len(self.avaliacoes)
+            print(f">> Média: {media:.2f}")
+
+class SistemaAvaliacoes:
+    def _init_(self):
+        self.quadras = [
+            Quadra("Quadra 1"),
+            Quadra("Quadra 2"),
+            Quadra("Quadra de Areia")
+        ]
+
+    def menu(self):
+        while True:
+            print("\n--- MENU DE AVALIAÇÕES ---")
+            print("1. Cadastrar avaliação")
+            print("2. Ver avaliações de uma quadra")
+            print("3. Sair")
+            opcao = input("Escolha uma opção: ")
+
+            if opcao == '1':
+                self.cadastrar_avaliacao()
+            elif opcao == '2':
+                self.ver_avaliacoes()
+            elif opcao == '3':
+                print("Encerrando sistema.")
+                break
+            else:
+                print("Opção inválida.")
+
+    def listar_quadras(self):
+        for i, quadra in enumerate(self.quadras):
+            print(f"{i + 1}. {quadra.nome}")
+
+    def cadastrar_avaliacao(self):
+        print("\nEscolha a quadra para avaliar:")
+        self.listar_quadras()
+        idx = int(input("Número da quadra: ")) - 1
+        nome_usuario = input("Seu nome: ")
+        nota = int(input("Nota (1 a 5): "))
+        self.quadras[idx].adicionar_avaliacao(nome_usuario, nota)
+
+    def ver_avaliacoes(self):
+        print("\nEscolha a quadra:")
+        self.listar_quadras()
+        idx = int(input("Número da quadra: ")) - 1
+        self.quadras[idx].mostrar_avaliacoes()
+
+# Iniciar o sistema
+sistema = SistemaAvaliacoes()
+sistema.menu()
