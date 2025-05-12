@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <string.h>
+#define MAX_ETAPAS 4
+int main() {
+char etapas[MAX_ETAPAS][50] = {"Planejamento", "Desenvolvimento", "Testes",
+"Deploy"};
+char status[MAX_ETAPAS][50];
+for (int i = 0; i < MAX_ETAPAS; i++) {
+strcpy(status[i], "Em progresso");
+}
+int todas_concluidas = 0; //Comando para verificar etapas concluidas
+Av. Universitária Km 3,5 - Cidade Universitária – Anápolis/GO, CEP 75083 - 515
+Secretaria Setorial – Bloco I
+Fone: (62) 3310 6658 | FAX: (62) 3310 6607
+//Esse laço repete ate que todas etapas estejam concluidas
+while (!todas_concluidas) {
+todas_concluidas = 1; //Aqui assume que todas etapas estao concluidas
+for (int i = 0; i < MAX_ETAPAS; i++) {
+if (strcmp(status[i], "Concluída") != 0) {
+//Aqui pergunta ao usuario sobre as etapas que estao em progresso
+int opcao;
+printf("\nEtapa: %s\n", etapas[i]);
+printf("Caso deseja concluir a etapa digite 1 para concluido, caso deseja que a
+etapa continue em progresso digite 0: ");
+scanf("%d", &opcao);
+if (opcao == 1) {
+strcpy(status[i], "Concluída");
+printf("Etapa %s concluída com sucesso!\n", etapas[i]);
+} else {
+printf("A etapa %s continua em progresso.\n", etapas[i]);
+}
+todas_concluidas = 0; //A etapa não concluida vai fazer com que o loop seja
+continuado
+}
+}
+//Aqui mostra o status atual do projeto
+printf("\nStatus Atual do Projeto:\n");
+for (int i = 0; i < MAX_ETAPAS; i++) {
+printf("%s: %s\n", etapas[i], (strcmp(status[i], "Concluída") == 0) ? "Concluída" :
+Av. Universitária Km 3,5 - Cidade Universitária – Anápolis/GO, CEP 75083 - 515
+Secretaria Setorial – Bloco I
+Fone: (62) 3310 6658 | FAX: (62) 3310 6607
+"Em progresso");
+}
+printf("------------------------------\n");
+}
+printf("\nProjeto finalizado!\n");
+return 0;
+}
